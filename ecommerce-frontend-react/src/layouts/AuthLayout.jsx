@@ -5,13 +5,14 @@ import { Outlet } from 'react-router-dom'
 export const AuthLayout = () => {
     return (
         <main className='max-w-4xl m-auto mt-10 md:mt-28 flex flex-col md:flex-row items-center'>
-            <img 
+            <img
                 src='../img/logo.svg'
                 alt='image logotype'
                 className=' max-w-xs'
             />
             <div className='p-10 w-full'>
-                <Outlet/> 
+                {/* Components son, for exaple login or register */}
+                <Outlet />
             </div>
 
         </main>

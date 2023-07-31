@@ -1,7 +1,7 @@
 import { BrowserRouter, createBrowserRouter } from 'react-router-dom'
 import Layout from './layouts/Layout';
 import { AuthLayout } from './layouts/AuthLayout';
-import { Start } from './views/Start';
+import { Home } from './views/Home';
 import { Login } from './views/Login';
 import { Register } from './views/Register';
 
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Start/>
+                element: <Home/>
             }
         ]
     },

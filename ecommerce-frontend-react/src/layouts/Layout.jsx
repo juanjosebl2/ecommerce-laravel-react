@@ -1,12 +1,17 @@
 import { Outlet } from 'react-router-dom'
+import { Sidebar } from '../components/Sidebar'
+import { Summary } from '../components/Summary'
 
 export default function Layout() {
   return (
-    <div>
-      Layout
+    <div className='md:flex'>
+      <Sidebar />
 
-      {/* First login, else redirect Login */}
-      <Outlet />
+      <main className='flex-1 h-screen overflow-y-scroll bg-gray-100 p-3'>
+        <Outlet />
+      </main>
+
+      <Summary />
     </div>
   )
 }
