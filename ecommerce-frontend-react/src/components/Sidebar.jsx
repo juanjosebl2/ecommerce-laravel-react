@@ -1,8 +1,10 @@
 import React from 'react'
-import { categories } from '../data/categories'
 import { Category } from './Category'
+import useStore from '../hooks/useStore'
 
 export const Sidebar = () => {
+
+    const {categories} = useStore();
 
     return (
         <aside className='md:w-72'>

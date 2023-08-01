@@ -1,12 +1,18 @@
 import React from 'react'
-import { products } from '../data/products'
+import { products as data } from '../data/products'
 import { Product } from '../components/Product'
+import useStore from '../hooks/useStore' 
 
 
 export const Home = () => {
+
+  const {categorieCurrent} = useStore();
+
+  const products = data.filter(product => product.category_id === categorieCurrent.id)
+
   return (
     <>
-      <h1 className='text-4xl font-black'>Home</h1>
+      <h1 className='text-4xl font-black'>{categorieCurrent.name}</h1>
       <p className=' text-2xl my-10'>
         Choose and customize your order
       </p>
