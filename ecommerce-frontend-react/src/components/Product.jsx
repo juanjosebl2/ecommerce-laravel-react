@@ -1,8 +1,10 @@
 import React from 'react'
 import { formatMoney } from "../helpers"
+import useStore from "../hooks/useStore"
 
 export const Product = (props) => {
 
+    const { handleClickModal, handleClickProduct } = useStore();
     const {name, price, image} = props.product
 
     return (
@@ -21,6 +23,10 @@ export const Product = (props) => {
                 <button
                     type='button'
                     className='bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold'
+                    onClick={() => {
+                        handleClickModal();
+                        handleClickProduct(props.product);
+                    }}
                 >
                     Agree
                 </button>
