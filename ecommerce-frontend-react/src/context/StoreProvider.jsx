@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { categories as categoriesBD } from '../data/categories';
+import { toast } from 'react-toastify'
+import { products } from '../data/products';
 
 const StoreContext = createContext();
 
@@ -10,6 +12,13 @@ export const StoreProvider = ({children}) => {
     const [modal, setModal] = useState(false);
     const [product, setProduct] = useState({});
     const [order, setOrder] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [numOrder, setNumOrder] = useState(0);
+
+    useEffect(() => {
+        const newTotal = order.reduce((total,product) => (product.price * product.amount) + total, 0)
+        setTotal(newTotal)
+    }, [order])
 
     const handleClickCategorie = id => {
         const category = categories.filter(categorie => categorie.id === id)[0];
@@ -25,10 +34,33 @@ export const StoreProvider = ({children}) => {
     }
 
     // In params before three points for delete elements in array, in this case
-    // delete categorie_id and image
+    // delete categorie_id 
     // ... order, product, it have a copy of order and add product
-    const handleAgreeOrderd = ({category_id, image, ...product}) => {
-        setOrder([...order, product])
+    const handleAgreeOrderd = ({category_id, ...product}) => {
+        if(order.some( orderState => orderState.id === product.id )) {
+            const orderUpdated = order.map( orderState => orderState.id === product.id ? product : orderState)
+            setOrder(orderUpdated)
+            setNumOrder(product.amount)
+            toast.success('Saved successfully')
+        } else {
+            setOrder([...order, product])
+            setNumOrder(numOrder + product.amount)
+            toast.success('Added to order')
+        }
+        
+    }
+
+    const handleEditAmount = productEdit => {
+        const productUpdated = order.filter(product => product.id === productEdit.id)[0]
+        setProduct(productUpdated)
+        setModal(!modal)
+    }   
+
+    const handleDeleteOrder = productDelete => {
+        const orderUpdated = order.filter(product => product.id !== productDelete.id)
+        setOrder(orderUpdated)
+        setNumOrder(numOrder - productDelete.amount)
+        toast.success('Deleted succesfully')
     }
 
     return(
@@ -42,7 +74,11 @@ export const StoreProvider = ({children}) => {
                 product,
                 handleClickProduct,
                 order,
-                handleAgreeOrderd
+                handleAgreeOrderd,
+                handleEditAmount,
+                handleDeleteOrder,
+                total,
+                numOrder
             }}
         >{children}</StoreContext.Provider>
     )

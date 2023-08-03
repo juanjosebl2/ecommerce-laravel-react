@@ -1,11 +1,20 @@
 import useStore from "../hooks/useStore"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatMoney } from "../helpers";
 
 export const ModalProduct = () => {
 
-    const { product, handleClickModal, handleAgreeOrderd } = useStore();
+    const { order, product, handleClickModal, handleAgreeOrderd } = useStore();
     const [ amount, setAmount ] = useState(1);
+    const [edit, setEdit] = useState(false)
+
+    useEffect(() => {
+        if(order.some( orderState => orderState.id === product.id )) {
+            const productEdit = order.filter( orderState => orderState.id === product.id)[0]
+            setAmount(productEdit.amount)
+            setEdit(true)
+        } 
+    }, [order])
 
     return (
         <div className="md:flex gap-10">
@@ -68,7 +77,7 @@ export const ModalProduct = () => {
                         handleClickModal()
                     }}
                 >   
-                    Add to order 
+                    {edit ? 'Save changes' : 'Add to the order'}
                 </button>
             </div>
             

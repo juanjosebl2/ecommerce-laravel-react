@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Modal from 'react-modal'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 import { Sidebar } from '../components/Sidebar'
 import { Summary } from '../components/Summary'
 import useStore from "../hooks/useStore"
@@ -38,6 +40,19 @@ export default function Layout() {
       <Modal isOpen={modal} style={customStyles} >
         <ModalProduct />
       </Modal>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   )
 }

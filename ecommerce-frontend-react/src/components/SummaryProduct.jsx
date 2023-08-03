@@ -1,7 +1,11 @@
 import { formatMoney } from "../helpers";
+import useStore from "../hooks/useStore";
 
 export const SummaryProduct = ({ product }) => {
-    const { id, name, price, amount } = product
+    
+    const { name, price, amount } = product
+    const {handleEditAmount, handleDeleteOrder} = useStore()
+    
     return (
         <div className="shadow space-y-1 p-4 bg-white">
             <div className="space-y-2">
@@ -19,6 +23,7 @@ export const SummaryProduct = ({ product }) => {
                 <button
                     type="button"
                     className="bg-sky-700 p-2 text-white rounded-md font-bold uppercase shadow-md text-center"
+                    onClick={() => handleEditAmount(product)}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -32,6 +37,7 @@ export const SummaryProduct = ({ product }) => {
                 <button
                     type="button"
                     className="bg-red-700 p-2 text-white rounded-md font-bold uppercase shadow-md text-center"
+                    onClick={() => handleDeleteOrder(product)}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

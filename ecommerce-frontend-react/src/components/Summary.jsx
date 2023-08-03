@@ -5,8 +5,10 @@ import { formatMoney } from '../helpers';
 
 export const Summary = () => {
 
-  const { order } = useStore();
-  const [numOrder, setNumOrder] = useState(0);
+  const { order, total, numOrder } = useStore();
+
+  const checkOrder = () => order.length === 0;
+
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -35,13 +37,18 @@ export const Summary = () => {
 
       <p className='text-xl mt-10'>
         Total: {''}
+        {formatMoney(total)}
       </p>
 
       <form className='w-full'>
         <div className='mt-5'>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 rounded uppercase font-bold text-white text-center w-full cursor-pointer"
+            className={`${checkOrder() ? 
+              'bg-indigo-100' : 
+              'bg-indigo-600 hover:bg-indigo-800 cursor-pointer' } 
+              px-5 py-2 rounded uppercase font-bold text-white text-center w-full`}
+            disabled={checkOrder()}
           >Send</button>
         </div>
       </form>
