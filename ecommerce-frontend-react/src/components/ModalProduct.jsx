@@ -4,7 +4,7 @@ import { formatMoney } from "../helpers";
 
 export const ModalProduct = () => {
 
-    const { product, handleClickModal } = useStore();
+    const { product, handleClickModal, handleAgreeOrderd } = useStore();
     const [ amount, setAmount ] = useState(1);
 
     return (
@@ -59,11 +59,15 @@ export const ModalProduct = () => {
                         </svg>
                     </button>
                 </div>                
-
+                {/* ...product, the three points for introduced all in array, i mean, product and amount in an array */}
                 <button
                     type="button"
                     className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 mt-5 text-white font-bold uppercase rounded"
-                >
+                    onClick={() => {
+                        handleAgreeOrderd({...product, amount})
+                        handleClickModal()
+                    }}
+                >   
                     Add to order 
                 </button>
             </div>

@@ -1,6 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import { categories as categoriesBD } from '../data/categories';
-import { Product } from '../components/Product';
 
 const StoreContext = createContext();
 
@@ -10,10 +9,11 @@ export const StoreProvider = ({children}) => {
     const [categorieCurrent, setCategorieCurrent] = useState(categories[0]);
     const [modal, setModal] = useState(false);
     const [product, setProduct] = useState({});
+    const [order, setOrder] = useState([]);
 
     const handleClickCategorie = id => {
-        const categorie = categories.filter(categorie => categorie.id === id)[0];
-        setCategorieCurrent(categorie);        
+        const category = categories.filter(categorie => categorie.id === id)[0];
+        setCategorieCurrent(category);        
     } 
 
     const handleClickModal = () => {
@@ -22,6 +22,13 @@ export const StoreProvider = ({children}) => {
 
     const handleClickProduct = product => {
         setProduct(product);
+    }
+
+    // In params before three points for delete elements in array, in this case
+    // delete categorie_id and image
+    // ... order, product, it have a copy of order and add product
+    const handleAgreeOrderd = ({category_id, image, ...product}) => {
+        setOrder([...order, product])
     }
 
     return(
@@ -33,7 +40,9 @@ export const StoreProvider = ({children}) => {
                 modal,
                 handleClickModal,
                 product,
-                handleClickProduct
+                handleClickProduct,
+                order,
+                handleAgreeOrderd
             }}
         >{children}</StoreContext.Provider>
     )

@@ -8,7 +8,15 @@ export const Home = () => {
 
   const {categorieCurrent} = useStore();
 
-  const products = data.filter(product => product.category_id === categorieCurrent.id)
+  //const products = data.filter(product => product.category_id === categorieCurrent.id)
+
+  const products = data.filter(product => {
+    if (categorieCurrent.name !== "All") {
+      return product.category_id === categorieCurrent.id;
+    } else {
+      return product;
+    }
+  });
 
   return (
     <>
