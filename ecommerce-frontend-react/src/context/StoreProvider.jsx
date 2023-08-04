@@ -18,6 +18,10 @@ export const StoreProvider = ({children}) => {
     useEffect(() => {
         const newTotal = order.reduce((total,product) => (product.price * product.amount) + total, 0)
         setTotal(newTotal)
+
+        const newNumOrder = order.reduce((numOrder,product) => (product.amount) + numOrder, 0)
+        setNumOrder(newNumOrder)
+
     }, [order])
 
     const handleClickCategorie = id => {
@@ -40,11 +44,9 @@ export const StoreProvider = ({children}) => {
         if(order.some( orderState => orderState.id === product.id )) {
             const orderUpdated = order.map( orderState => orderState.id === product.id ? product : orderState)
             setOrder(orderUpdated)
-            setNumOrder(product.amount)
             toast.success('Saved successfully')
         } else {
             setOrder([...order, product])
-            setNumOrder(numOrder + product.amount)
             toast.success('Added to order')
         }
         
@@ -59,7 +61,6 @@ export const StoreProvider = ({children}) => {
     const handleDeleteOrder = productDelete => {
         const orderUpdated = order.filter(product => product.id !== productDelete.id)
         setOrder(orderUpdated)
-        setNumOrder(numOrder - productDelete.amount)
         toast.success('Deleted succesfully')
     }
 

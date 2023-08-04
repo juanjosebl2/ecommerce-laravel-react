@@ -10,7 +10,7 @@ export const Summary = () => {
   const checkOrder = () => order.length === 0;
 
   const [isOpen, setIsOpen] = useState(false);
-  const handleClick = () => {
+  const handleClickBasket = () => {
     setIsOpen(!isOpen);
     
   };
@@ -61,7 +61,7 @@ export const Summary = () => {
     <aside>
       <button
         className={`${isOpen ? "bg-amber-400" : 'bg-white'} flex items-center gap-4 border w-full p-3 hover:bg-amber-400 cursor-pointer`}
-        onClick={handleClick}
+        onClick={handleClickBasket}
       >
         <img
           className='w-12'
