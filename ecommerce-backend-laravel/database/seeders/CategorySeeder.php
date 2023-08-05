@@ -30,7 +30,7 @@ class CategorySeeder extends Seeder
         
         DB::table('categories')->insert([
             'name' => 'Burguers',
-            'icon' => 'Burguer',
+            'icon' => 'burguer',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

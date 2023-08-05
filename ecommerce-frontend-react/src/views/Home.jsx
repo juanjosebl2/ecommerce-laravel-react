@@ -1,16 +1,23 @@
 import React from 'react'
-import { products as data } from '../data/products'
 import { Product } from '../components/Product'
 import useStore from '../hooks/useStore' 
-
+import useSWR from 'swr'
+import clientAxios from '../config/axios'
 
 export const Home = () => {
 
   const {categorieCurrent} = useStore();
 
-  //const products = data.filter(product => product.category_id === categorieCurrent.id)
+  const fetcher = () => clientAxios('/api/products').then(data => data.data)
 
-  const products = data.filter(product => {
+  const { data, error, isLoading } = useSWR('/api/products', fetcher, {
+    refreshInterval: 1000
+  })
+
+  if(isLoading) return 'Loading...';
+  if(error) return 'NOT FOUND 404';
+
+  const products = data.data.filter(product => {
     if (categorieCurrent.name !== "All") {
       return product.category_id === categorieCurrent.id;
     } else {

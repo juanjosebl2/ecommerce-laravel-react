@@ -5,10 +5,30 @@ BACKEND - LARAVEL
 Abrir docker desktop
 curl -s https://laravel.build/example-app | bash
 cd exam..
+chown o+w ./storage/ -R
 sail up (si no tengo por defecto sail --> alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail')
-sudo chmod o+w ./storage/ -R
-localhost:80
 
+http://localhost:8080/
+
+    Proceso de creacion
+
+sail shell
+php artisan make:model Category --migration --controller
+Para crear migracion controlador y model en base a una api http
+php artisan make:model Product --resource --api --migration
+php artisan migrate o php artisan migrate:refresh
+
+php artisan make:seeder CategorySeeder
+php artisan db:seed
+
+php artisan migrate:refresh --seed
+
+php artisan make:resource CategoryCollection
+php artisan make:resource CategoryResource
+
+json viewer para chrome
+
+sail up
 
 FRONTEND - REACT
 
@@ -29,3 +49,24 @@ npx tailwindcss init -p
 Modificar tailwind.config.js
 
 npm i react-router-dom
+
+Modal para cargar productos en la tienda util para la cesta
+npm i react-modal
+
+Para cuando realices un pedido te salte una notificacion de que esta correcto
+npm i react-toastify
+
+para obtener datos del backend con async uso axios porque es mejor para peticiones http que fetch
+npm i axios
+inspeccion-red-fetch se ve las peticiones
+
+crear archivo env.local para ocultar informacion, en .gitignore todos los archivos *.local son ignorados e invisibles 
+
+Visualiza las consultas al backend para que sea mas eficientes
+npm i swr
+
+Para icons svg
+https://heroicons.com/
+
+
+
