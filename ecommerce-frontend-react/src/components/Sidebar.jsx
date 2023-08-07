@@ -4,7 +4,7 @@ import useStore from '../hooks/useStore'
 
 export const Sidebar = () => {
 
-    const {categories} = useStore();
+    const { categories } = useStore();
 
     return (
         <aside className='md:w-72'>
@@ -16,7 +16,7 @@ export const Sidebar = () => {
                 />
             </div>
             <div className='mt-10'>
-                {categories.map( category  => (
+                {categories.map(category => (
                     <Category
                         key={category.id}
                         category={category}

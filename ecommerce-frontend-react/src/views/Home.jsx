@@ -18,6 +18,7 @@ export const Home = () => {
   if(error) return 'NOT FOUND 404';
 
   const products = data.data.filter(product => {
+    console.log(categorieCurrent.id)
     if (categorieCurrent.name !== "All") {
       return product.category_id === categorieCurrent.id;
     } else {
