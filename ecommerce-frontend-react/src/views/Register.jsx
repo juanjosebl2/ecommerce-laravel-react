@@ -1,8 +1,7 @@
 import { createRef, useState} from 'react'
 import { Link } from 'react-router-dom'
-import clientAxios from '../config/axios'
 import { Alert } from '../components/Alert'
-
+import { useAuth } from '../hooks/useAuth'
 
 export const Register = () => {
 
@@ -12,6 +11,7 @@ export const Register = () => {
     const passwordConfirmationRef = createRef()
 
     const [errors, setErrors] = useState([])
+    const {register} = useAuth({middleware: 'guest', url: '/'})
     
     const handleSubmit = async e => {
         e.preventDefault()
@@ -23,13 +23,7 @@ export const Register = () => {
             password_confirmation: passwordConfirmationRef.current.value,
         }
 
-        try {
-            const res = await clientAxios.post('/api/register', data)
-            //console.log(res.data.token)
-
-        } catch (error) {
-            setErrors(Object.values(error.response.data.errors))
-        }
+        register(data, setErrors)
     }
 
     return (

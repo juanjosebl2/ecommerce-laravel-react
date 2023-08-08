@@ -1,10 +1,12 @@
 import React from 'react'
 import { Category } from './Category'
 import useStore from '../hooks/useStore'
+import { useAuth } from '../hooks/useAuth'
 
 export const Sidebar = () => {
 
     const { categories } = useStore();
+    const {logout, user} = useAuth({middleware: 'auth'})
 
     // Change array for put in first place category All
     const allCategoryIndex = categories.findIndex(category => category.name === 'All');
@@ -23,6 +25,7 @@ export const Sidebar = () => {
                     alt="image logo"
                 />
             </div>
+            <p className='my-10 text-xl text-center'>Hello: {user?.name}</p>
             <div className='mt-10'>
                 {categories.map(category => (
                     <Category
@@ -35,8 +38,9 @@ export const Sidebar = () => {
                 <button
                     type='button'
                     className='text-center bg-red-500 w-full p-3 font-bold text-white truncate'
+                    onClick={logout}
                 >
-                    Cancel order
+                    LOG OUT
                 </button>
             </div>
         </aside>

@@ -28,7 +28,8 @@ export const StoreProvider = ({children}) => {
             const response = await clientAxios('/api/categories')
             const {data} = await response.data;
             setCategories(data)
-            setCategorieCurrent(data[0])
+            const categoryAll = data.find(item => item.name === 'All');
+            setCategorieCurrent(categoryAll)
         } catch (error) {
             console.log(error)
         }
