@@ -2,17 +2,25 @@ import { React, useState } from 'react'
 import useStore from '../hooks/useStore';
 import { SummaryProduct } from './SummaryProduct';
 import { formatMoney } from '../helpers';
+import { useAuth } from '../hooks/useAuth'
+
 
 export const Summary = () => {
 
-  const { order, total, numOrder } = useStore();
+  const { order, total, numOrder, handleSubmitNewOrder } = useStore();
+  const {logout} = useAuth({})
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    handleSubmitNewOrder(logout)
+  }
 
   const checkOrder = () => order.length === 0;
 
   const [isOpen, setIsOpen] = useState(false);
   const handleClickBasket = () => {
     setIsOpen(!isOpen);
-    
+
   };
   const dropdownContent = isOpen ? (
     <div className='w-72 h-screen overflow-y-scroll p-5'>
@@ -40,16 +48,19 @@ export const Summary = () => {
         {formatMoney(total)}
       </p>
 
-      <form className='w-full'>
+      <form
+        className='w-full'
+        onSubmit={handleSubmit}
+      >
         <div className='mt-5'>
           <button
             type="submit"
-            className={`${checkOrder() ? 
-              'bg-indigo-100' : 
-              'bg-indigo-600 hover:bg-indigo-800 cursor-pointer' } 
+            className={`${checkOrder() ?
+              'bg-indigo-100' :
+              'bg-indigo-600 hover:bg-indigo-800 cursor-pointer'} 
               px-5 py-2 rounded uppercase font-bold text-white text-center w-full`}
             disabled={checkOrder()}
-          >Send</button>
+          >Confirm order</button>
         </div>
       </form>
     </div>

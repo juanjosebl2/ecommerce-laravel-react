@@ -28,6 +28,8 @@ php artisan make:resource CategoryResource
 
 php artisan make:request RegisterRequest
 
+php artisan make:model Order --migration --api --resource
+
 json viewer para chrome
 
 sail up

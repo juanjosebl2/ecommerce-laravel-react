@@ -52,6 +52,42 @@ export const StoreProvider = ({children}) => {
         setProduct(product);
     }
 
+    const handleSubmitNewOrder = async () => {
+        const token = localStorage.getItem('AUTH_TOKEN')
+        try {
+            const {data} = await clientAxios.post('/api/orders', 
+            {
+                total,
+                products: order.map(product => {
+                    return {
+                        id: product.id,
+                        amount: product.amount
+                    }
+                })
+            }, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            toast.success(data.message);
+            setTimeout(() => {
+                setOrder([])
+            }, 1000);
+
+            // Log out user
+            /*setTimeout(() => {
+                localStorage.removeItem('AUTH_TOKEN');
+                logout();
+            }, 3000);*/
+
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     // In params before three points for delete elements in array, in this case
     // delete categorie_id 
     // ... order, product, it have a copy of order and add product
@@ -94,7 +130,8 @@ export const StoreProvider = ({children}) => {
                 handleEditAmount,
                 handleDeleteOrder,
                 total,
-                numOrder
+                numOrder,
+                handleSubmitNewOrder
             }}
         >{children}</StoreContext.Provider>
     )
