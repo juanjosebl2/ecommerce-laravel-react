@@ -24,8 +24,13 @@ export const StoreProvider = ({children}) => {
     }, [order])
 
     const getCategory = async() => {
+        const token = localStorage.getItem('AUTH_TOKEN')
         try {
-            const response = await clientAxios('/api/categories')
+            const response = await clientAxios('/api/categories', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             const {data} = await response.data;
             setCategories(data)
             const categoryAll = data.find(item => item.name === 'All');
@@ -115,6 +120,19 @@ export const StoreProvider = ({children}) => {
         toast.success('Deleted succesfully')
     }
 
+    const handleCompleteOrder = async id => {
+        const token = localStorage.getItem('AUTH_TOKEN')
+        try {
+            await clientAxios.put(`/api/orders/${id}`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return(
         <StoreContext.Provider
             value={{
@@ -131,7 +149,8 @@ export const StoreProvider = ({children}) => {
                 handleDeleteOrder,
                 total,
                 numOrder,
-                handleSubmitNewOrder
+                handleSubmitNewOrder,
+                handleCompleteOrder
             }}
         >{children}</StoreContext.Provider>
     )

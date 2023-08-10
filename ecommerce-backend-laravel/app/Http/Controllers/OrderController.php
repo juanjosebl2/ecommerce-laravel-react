@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderCollection;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -15,7 +16,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return new OrderCollection(Order::with('user')->with('products')->where('state', 0)->get());
     }
 
     /**
@@ -64,7 +65,12 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $order->state = 1;
+        $order->save();
+
+        return [
+            'order' => $order
+        ];
     }
 
     /**

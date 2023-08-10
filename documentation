@@ -8,7 +8,7 @@ cd exam..
 chown o+w ./storage/ -R
 sail up (si no tengo por defecto sail --> alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail')
 
-http://localhost:8080/
+http://localhost:80/
 
     Proceso de creacion
 
@@ -37,6 +37,10 @@ sail up
 Para configurar mejor la seguridad de los datos con cors 
 config/cors.php 
 
+Para añadir una columna en una tabla sin quitar el contenido actual
+en este caso añadimos en users una columna admin
+sail php artisan make:migration add_admin_column_to_users_table
+sail artisan migrate
 
 FRONTEND - REACT
 
@@ -79,3 +83,7 @@ https://heroicons.com/
 Para configurar mejor la seguridad de los datos con cors 
 config/axios.php 
 
+Super util
+https://tailwindcomponents.com/
+https://tailwindui.com/
+https://tailwind-elements.com/

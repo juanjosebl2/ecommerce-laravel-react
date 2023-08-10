@@ -25,7 +25,7 @@ Modal.setAppElement('#root')
 export default function Layout() {
 
   const { modal } = useStore();
-  const {user, error} = useAuth({middleware: 'auth'})
+  useAuth({middleware: 'auth'})
 
   return (
     <>

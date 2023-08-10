@@ -18,17 +18,17 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('orders', OrderController::class);
-});
 
-Route::apiResource('/categories', CategoryController::class);
-Route::apiResource('/products', ProductController::class);
+    Route::apiResource('/categories', CategoryController::class);
+    Route::apiResource('/products', ProductController::class);
+});
 
 //Autentication
 Route::post('/register', [AuthController::class, 'register']);
