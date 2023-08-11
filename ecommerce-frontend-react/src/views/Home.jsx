@@ -1,21 +1,23 @@
-import React from 'react'
 import { Product } from '../components/Product'
-import useStore from '../hooks/useStore' 
+import useStore from '../hooks/useStore'
 import useSWR from 'swr'
 import clientAxios from '../config/axios'
 
 export const Home = () => {
 
-  const {categorieCurrent} = useStore();
+  const { categorieCurrent } = useStore();
 
-  const fetcher = () => clientAxios('/api/products').then(data => data.data)
+  const token = localStorage.getItem('AUTH_TOKEN')
+  const fetcher = () => clientAxios('/api/products', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then(data => data.data)
 
-  const { data, error, isLoading } = useSWR('/api/products', fetcher, {
-    refreshInterval: 1000
-  })
+  const { data, error, isLoading } = useSWR('/api/products', fetcher, { refreshInterval: 1000 })
 
-  if(isLoading) return 'Loading...';
-  if(error) return 'NOT FOUND 404';
+  if (isLoading) return 'Loading...'
+  if (error) return 'NOT FOUND 404...'
 
   const products = data.data.filter(product => {
     if (categorieCurrent.name !== "All") {
@@ -37,6 +39,7 @@ export const Home = () => {
           <Product
             key={product.id}
             product={product}
+            buttonAgree={true}
           />
         ))}
       </div>

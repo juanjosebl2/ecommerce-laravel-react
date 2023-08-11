@@ -11,7 +11,7 @@ export const Products = () => {
         }
     }).then(data => data.data)
 
-    const { data, error, isLoading } = useSWR('/api/products', fetcher, { refreshInterval: 10000 })
+    const { data, error, isLoading } = useSWR('/api/products', fetcher, { refreshInterval: 1000 })
 
     if (isLoading) return 'Loading...'
     if (error) return 'NOT FOUND 404...'
@@ -22,8 +22,16 @@ export const Products = () => {
             <p className='text-2xl my-10'>
                 Manage availability from here.
             </p>
+            <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+                {data.data.map(product => (
+                    <Product
+                        key={product.id}
+                        product={product}
+                        buttonAvailable={true}
+                    />
+                ))}
+            </div>
 
-            
         </div>
     )
 }

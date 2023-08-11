@@ -28,7 +28,8 @@ class RegisterRequest extends FormRequest
             'password' => [
                 'required',
                 'confirmed',
-                PasswordRules::min(8)->numbers()
+                PasswordRules::min(8)
+                //PasswordRules::min(8)->numbers()->letters()->symbols()
             ]
         ];
     }

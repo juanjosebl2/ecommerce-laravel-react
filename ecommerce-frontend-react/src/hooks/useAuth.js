@@ -14,10 +14,14 @@ export const useAuth = ({ middleware, url }) => {
                 Authorization: `Bearer ${token}`
             }
         })
-            .then(res => res.data)
+            .then((res) => {
+                //console.log('API Response:', res.data); 
+                return res.data;
+            })
             .catch(error => {
                 throw Error(error?.response?.data?.errors)
             })
+
     )
 
     const login = async (dataR, setErrors) => {
@@ -60,22 +64,22 @@ export const useAuth = ({ middleware, url }) => {
     }
 
     useEffect(() => {
-        if(middleware === 'guest' && url && user) {
+        if (middleware === 'guest' && url && user) {
             navigate(url)
         }
 
-        if(middleware === 'guest' && user && user.admin) {
+        if (middleware === 'guest' && user && user.admin) {
             navigate('/admin')
         }
 
-        if(middleware === 'admin' && user && !user.admin) {
+        if (middleware === 'admin' && user && !user.admin) {
             navigate('/')
         }
-        
-        if(middleware === 'auth' && error) {
+
+        if (middleware === 'auth' && error) {
             navigate('/auth/login')
         }
-     }, [user, error]) 
+    }, [user, error])
 
     return {
         login,

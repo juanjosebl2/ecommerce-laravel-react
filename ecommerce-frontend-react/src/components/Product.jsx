@@ -2,10 +2,10 @@ import React from 'react'
 import { formatMoney } from "../helpers"
 import useStore from "../hooks/useStore"
 
-export const Product = (props) => {
+export const Product = ({product, buttonAgree = false, buttonAvailable = false}) => {
 
-    const { handleClickModal, handleClickProduct } = useStore();
-    const {name, price, image} = props.product
+    const { handleClickModal, handleClickProduct, handleProductExhausted } = useStore();
+    const {name, price, image} = product
 
     return (
         <div className=' border p-3 shadow bg-white'>
@@ -20,16 +20,29 @@ export const Product = (props) => {
                 <p className='mt-5 font-black text-4xl text-amber-500'>
                     {formatMoney(price)}
                 </p>
-                <button
+
+                {buttonAgree && (
+                    <button
+                        type='button'
+                        className='bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold'
+                        onClick={() => {
+                            handleClickModal();
+                            handleClickProduct(product);
+                        }}
+                    >
+                        Agree
+                    </button>
+                )}
+
+                {buttonAvailable && (
+                    <button
                     type='button'
                     className='bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold'
-                    onClick={() => {
-                        handleClickModal();
-                        handleClickProduct(props.product);
-                    }}
+                    onClick={() => handleProductExhausted(product.id)}
                 >
-                    Agree
+                    Product exhausted
                 </button>
+                )}
             </div>
         </div>
     )

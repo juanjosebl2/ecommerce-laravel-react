@@ -4,7 +4,7 @@ import clientAxios from '../config/axios';
 
 const StoreContext = createContext();
 
-export const StoreProvider = ({children}) => {
+export const StoreProvider = ({ children }) => {
 
     const [categories, setCategories] = useState([]);
     const [categorieCurrent, setCategorieCurrent] = useState({});
@@ -15,15 +15,15 @@ export const StoreProvider = ({children}) => {
     const [numOrder, setNumOrder] = useState(0);
 
     useEffect(() => {
-        const newTotal = order.reduce((total,product) => (product.price * product.amount) + total, 0)
+        const newTotal = order.reduce((total, product) => (product.price * product.amount) + total, 0)
         setTotal(newTotal)
 
-        const newNumOrder = order.reduce((numOrder,product) => (product.amount) + numOrder, 0)
+        const newNumOrder = order.reduce((numOrder, product) => (product.amount) + numOrder, 0)
         setNumOrder(newNumOrder)
 
     }, [order])
 
-    const getCategory = async() => {
+    const getCategory = async () => {
         const token = localStorage.getItem('AUTH_TOKEN')
         try {
             const response = await clientAxios('/api/categories', {
@@ -31,7 +31,7 @@ export const StoreProvider = ({children}) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            const {data} = await response.data;
+            const { data } = await response.data;
             setCategories(data)
             const categoryAll = data.find(item => item.name === 'All');
             setCategorieCurrent(categoryAll)
@@ -46,12 +46,12 @@ export const StoreProvider = ({children}) => {
 
     const handleClickCategorie = id => {
         const category = categories.filter(categorie => categorie.id === id)[0];
-        setCategorieCurrent(category);        
-    } 
+        setCategorieCurrent(category);
+    }
 
     const handleClickModal = () => {
-        setModal(!modal);    
-    } 
+        setModal(!modal);
+    }
 
     const handleClickProduct = product => {
         setProduct(product);
@@ -60,21 +60,21 @@ export const StoreProvider = ({children}) => {
     const handleSubmitNewOrder = async () => {
         const token = localStorage.getItem('AUTH_TOKEN')
         try {
-            const {data} = await clientAxios.post('/api/orders', 
-            {
-                total,
-                products: order.map(product => {
-                    return {
-                        id: product.id,
-                        amount: product.amount
+            const { data } = await clientAxios.post('/api/orders',
+                {
+                    total,
+                    products: order.map(product => {
+                        return {
+                            id: product.id,
+                            amount: product.amount
+                        }
+                    })
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 })
-            }, 
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
 
             toast.success(data.message);
             setTimeout(() => {
@@ -87,7 +87,7 @@ export const StoreProvider = ({children}) => {
                 logout();
             }, 3000);*/
 
-            
+
         } catch (error) {
             console.log(error)
         }
@@ -96,23 +96,23 @@ export const StoreProvider = ({children}) => {
     // In params before three points for delete elements in array, in this case
     // delete categorie_id 
     // ... order, product, it have a copy of order and add product
-    const handleAgreeOrderd = ({category_id, ...product}) => {
-        if(order.some( orderState => orderState.id === product.id )) {
-            const orderUpdated = order.map( orderState => orderState.id === product.id ? product : orderState)
+    const handleAgreeOrderd = ({ category_id, ...product }) => {
+        if (order.some(orderState => orderState.id === product.id)) {
+            const orderUpdated = order.map(orderState => orderState.id === product.id ? product : orderState)
             setOrder(orderUpdated)
             toast.success('Saved successfully')
         } else {
             setOrder([...order, product])
             toast.success('Added to order')
         }
-        
+
     }
 
     const handleEditAmount = productEdit => {
         const productUpdated = order.filter(product => product.id === productEdit.id)[0]
         setProduct(productUpdated)
         setModal(!modal)
-    }   
+    }
 
     const handleDeleteOrder = productDelete => {
         const orderUpdated = order.filter(product => product.id !== productDelete.id)
@@ -133,7 +133,20 @@ export const StoreProvider = ({children}) => {
         }
     }
 
-    return(
+    const handleProductExhausted = async id => {
+        const token = localStorage.getItem('AUTH_TOKEN')
+        try {
+            await clientAxios.put(`/api/products/${id}`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return (
         <StoreContext.Provider
             value={{
                 categories,
@@ -150,7 +163,8 @@ export const StoreProvider = ({children}) => {
                 total,
                 numOrder,
                 handleSubmitNewOrder,
-                handleCompleteOrder
+                handleCompleteOrder,
+                handleProductExhausted,
             }}
         >{children}</StoreContext.Provider>
     )

@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react'
+import { createRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Alert } from '../components/Alert'
 import { useAuth } from '../hooks/useAuth'
@@ -8,11 +8,17 @@ export const Login = () => {
     const emailRef = createRef()
     const passwordRef = createRef()
 
+    const [isLoading, setLoading] = useState(false);
+
     const [errors, setErrors] = useState([])
-    const {login} = useAuth({
+    const { login } = useAuth({
         middleware: 'guest',
         url: '/'
-    }) 
+    })
+
+    useEffect(() => {
+        if(errors.length !== 0) setLoading(false)
+    }, [errors])
 
     const handleSubmit = async e => {
         e.preventDefault()
@@ -22,8 +28,12 @@ export const Login = () => {
             password: passwordRef.current.value,
         }
 
-        login(data,setErrors)
+        setLoading(true);
+        login(data, setErrors)
+        
     }
+
+    if(isLoading) return 'Loading...';
 
     return (
         <>
@@ -35,8 +45,8 @@ export const Login = () => {
                     onSubmit={handleSubmit}
                     noValidate
                 >
-                    {errors ? errors.map((error, i) => <Alert key={i}>{error}</Alert>)  : null }
-                    
+                    {errors ? errors.map((error, i) => <Alert key={i}>{error}</Alert>) : null}
+
                     <div className=' mb-4'>
                         <label
                             className="text-slate-800"
@@ -52,7 +62,7 @@ export const Login = () => {
                         />
                     </div>
                     <div className=' mb-4'>
-                         <label
+                        <label
                             className="text-slate-800"
                             htmlFor="password"
                         >Password:</label>
