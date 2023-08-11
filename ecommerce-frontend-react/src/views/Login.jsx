@@ -28,7 +28,7 @@ export const Login = () => {
             password: passwordRef.current.value,
         }
 
-        setLoading(true);
+        setLoading(true)
         login(data, setErrors)
         
     }

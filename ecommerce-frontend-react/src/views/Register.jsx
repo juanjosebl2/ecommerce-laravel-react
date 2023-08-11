@@ -1,4 +1,4 @@
-import { createRef, useState} from 'react'
+import { createRef, useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { Alert } from '../components/Alert'
 import { useAuth } from '../hooks/useAuth'
@@ -11,7 +11,12 @@ export const Register = () => {
     const passwordConfirmationRef = createRef()
 
     const [errors, setErrors] = useState([])
+    const [isLoading, setLoading] = useState(false);
     const {register} = useAuth({middleware: 'guest', url: '/'})
+
+    useEffect(() => {
+        if(errors.length !== 0) setLoading(false)
+    }, [errors])
     
     const handleSubmit = async e => {
         e.preventDefault()
@@ -24,7 +29,10 @@ export const Register = () => {
         }
 
         register(data, setErrors)
+        setLoading(true)
     }
+
+    if(isLoading) return 'Loading...';
 
     return (
         <>

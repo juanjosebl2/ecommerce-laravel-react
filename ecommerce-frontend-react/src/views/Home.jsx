@@ -16,6 +16,8 @@ export const Home = () => {
 
   const { data, error, isLoading } = useSWR('/api/products', fetcher, { refreshInterval: 1000 })
 
+  console.log(data)
+
   if (isLoading) return 'Loading...'
   if (error) return 'NOT FOUND 404...'
 
